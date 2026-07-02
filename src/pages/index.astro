@@ -1,12 +1,17 @@
 ---
 const pageTitle = "Inventory Management System";
+import Greeting from '../components/Greeting.tsx';
+import InventoryList from "../components/InventoryList.tsx";
 ---
 
-<html lang="en">
-	<head>
-		<title>{pageTitle}</title>
-	</head>
-	<body>
-		<h1>{pageTitle}</h1>
-	</body>
+<html>
+  <head>
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <h1>{pageTitle}</h1>
+    <Greeting client:load />
+
+    <InventoryList client:load />
+  </body>
 </html>
