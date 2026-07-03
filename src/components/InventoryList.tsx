@@ -4,6 +4,7 @@ import AddItemForm from "./AddItemForm";
 import { supabase } from "../lib/supabase";
 import StatsBar from "./StatsBar";
 import "./InventoryList.scss";
+import SearchBar from "./SearchBar";
 
 type Item = {
   id: number;
@@ -62,11 +63,21 @@ export default function InventoryList() {
 }
 
   const totalItems = items.length;
-  const totalUnits = items.reduce((sum, item) => sum + item.quantity, 0);
-  const lowStockCount = items.filter((item) => item.quantity < 10).length;
+const totalUnits = items.reduce((sum, item) => sum + item.quantity, 0);
+const lowStockCount = items.filter((item) => item.quantity < 10).length;
+  const [searchQuery, setSearchQuery] = useState("");
+const filteredItems = items.filter((item) =>
+  item.name.toLowerCase().includes(searchQuery.toLowerCase()
+
+)
+
+
+
+);
 
   return (
     <div>
+    <SearchBar value={searchQuery} onChange={setSearchQuery} />
       <StatsBar totalItems={totalItems} totalUnits={totalUnits} lowStockCount={lowStockCount} />
       <AddItemForm onAdd={handleAdd} />
       <div className="item-list">
@@ -79,16 +90,16 @@ export default function InventoryList() {
           <span>Status</span>
           <span></span>
         </div>
-        {items.map((item) => (
-          <InventoryItem
-            key={item.id}
-            name={item.name}
-            quantity={item.quantity}
-            storageLocation={item.storage_location}
-            updatedAt={item.updated_at}
-            onDelete={() => handleDelete(item.id)}
-          />
-        ))}
+        {filteredItems.map((item) => (
+  <InventoryItem
+    key={item.id}
+    name={item.name}
+    quantity={item.quantity}
+    storageLocation={item.storage_location}
+    updatedAt={item.updated_at}
+    onDelete={() => handleDelete(item.id)}
+  />
+))}
       </div>
     </div>
   );
