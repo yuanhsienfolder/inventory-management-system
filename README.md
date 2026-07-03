@@ -1,43 +1,72 @@
-# Astro Starter Kit: Minimal
+# Inventory Management System
 
-```sh
-npm create astro@latest -- --template minimal
-```
+A full-stack inventory management dashboard built to practice modern web development — from database design and authentication to responsive, theme-aware UI.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Features
 
-## 🚀 Project Structure
+- 🔐 **Authentication** — Email/password signup and login via Supabase Auth
+- 🔒 **Per-user data isolation** — Row Level Security (RLS) policies ensure each user only sees their own inventory
+- 📦 **Full CRUD** — Add, view, and delete inventory items in real time
+- 📊 **Live dashboard stats** — Total items, total units, and low-stock alerts computed from live data
+- 🔍 **Real-time search** — Filter inventory instantly as you type
+- 🌗 **Dark / light mode** — Theme preference saved across sessions
+- 🏷️ **Stock status badges** — Automatic In Stock / Low Stock / Out of Stock indicators
+- ⏱️ **Auto-tracked timestamps** — Database trigger updates "Last Updated" on every change
 
-Inside of your Astro project, you'll see the following folders and files:
+## Tech Stack
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+| Layer | Technology |
+|---|---|
+| Framework | [Astro](https://astro.build) |
+| UI Library | React + TypeScript |
+| Styling | SASS (SCSS) with CSS custom properties for theming |
+| Backend / Database | [Supabase](https://supabase.com) (PostgreSQL, Auth, Row Level Security) |
+| Version Control | Git / GitHub |
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Getting Started
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+### Prerequisites
+- Node.js (LTS recommended)
+- A free [Supabase](https://supabase.com) account
 
-Any static assets, like images, can be placed in the `public/` directory.
+### Setup
 
-## 🧞 Commands
+1. Clone the repository
+   \`\`\`bash
+   git clone https://github.com/yuanhsienfolder/inventory-management-system.git
+   cd inventory-management-system
+   \`\`\`
 
-All commands are run from the root of the project, from a terminal:
+2. Install dependencies
+   \`\`\`bash
+   npm install
+   \`\`\`
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+3. Create a `.env` file in the project root with your Supabase credentials:
+   \`\`\`
+   PUBLIC_SUPABASE_URL=your-supabase-url
+   PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+   \`\`\`
 
-## 👀 Want to learn more?
+4. Set up the database — in your Supabase project's SQL Editor, create an `items` table with the following columns: `id`, `name`, `quantity`, `storage_location`, `updated_at`, `user_id`, along with the appropriate RLS policies (see `/docs` or project notes for full schema).
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+5. Run the dev server
+   \`\`\`bash
+   npm run dev
+   \`\`\`
+
+## Screenshots
+
+*(Add your screenshots here — light mode and dark mode)*
+
+## What I Learned
+
+Building this project helped me understand:
+- How component-based UI architecture works in practice (props, state, lifting state up)
+- Why database security (RLS) matters and how to implement per-user data isolation
+- The tradeoffs between client-side and server-side data operations
+- How to design a theming system using CSS custom properties instead of hardcoded values
+
+## License
+
+This project is for educational/portfolio purposes.

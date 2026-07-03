@@ -12,7 +12,7 @@ return (
 	<header className = "app-header">
 	<div className = "app-header__brand">
 		<span className = "app-header__logo">▣</span>
-		<h1> StockKepps </h1>
+		<h1> StockKeeps </h1>
 	</div>
 	<div className  = "app-header__actions">
 		<ThemeToggle />

@@ -1,7 +1,6 @@
 ---
 import "../styles/global.scss";
 const pageTitle = "Inventory Management System";
-import Greeting from '../components/Greeting.tsx';
 import InventoryList from "../components/InventoryList.tsx";
 import Auth from "../components/Auth.tsx";
 import App from "../components/App.tsx";
@@ -16,7 +15,6 @@ import App from "../components/App.tsx";
   </head>
   <body>
     <h1>{pageTitle}</h1>
-    <Greeting client:load />
     <App client:load />
   </body>
 </html>
