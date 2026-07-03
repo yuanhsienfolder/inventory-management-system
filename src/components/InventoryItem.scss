@@ -1,14 +1,22 @@
 .item-row {
   display: grid;
-  grid-template-columns: 1fr 100px 130px 40px;
+  grid-template-columns: 32px 1fr 100px 130px 40px;
   align-items: center;
   gap: 1rem;
   padding: 0.9rem 1.5rem;
   border-bottom: 1px solid var(--border-color);
   transition: background 0.15s ease;
+  position: relative;
 
   &:hover {
     background: var(--bg-primary);
+  }
+
+  &__checkbox {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent);
+    cursor: pointer;
   }
 
   &__name {
@@ -21,7 +29,11 @@
     color: var(--text-secondary);
   }
 
-  &__delete {
+  &__menu-wrapper {
+    position: relative;
+  }
+
+  &__menu-trigger {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -31,12 +43,13 @@
     border: none;
     border-radius: 6px;
     color: var(--text-secondary);
+    font-size: 1.1rem;
     cursor: pointer;
     transition: all 0.15s ease;
 
     &:hover {
-      background: var(--danger-bg);
-      color: var(--danger);
+      background: var(--bg-primary);
+      color: var(--text-primary);
     }
   }
 }
@@ -64,5 +77,44 @@
   &--danger {
     background: var(--danger-bg);
     color: var(--danger);
+  }
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 140px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  z-index: 10;
+
+  &__item {
+    display: block;
+    width: 100%;
+    padding: 0.6rem 1rem;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-family: "Inter", sans-serif;
+    font-size: 0.875rem;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: var(--bg-primary);
+    }
+
+    &--danger {
+      color: var(--danger);
+
+      &:hover {
+        background: var(--danger-bg);
+      }
+    }
   }
 }

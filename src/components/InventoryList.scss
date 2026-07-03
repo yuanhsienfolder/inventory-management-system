@@ -3,15 +3,15 @@
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
   border-radius: 10px;
-  overflow: hidden;
 
   &__header {
     display: grid;
-    grid-template-columns: 1fr 100px 130px 40px;
+  grid-template-columns: 32px 1fr 100px 130px 40px;
     gap: 1rem;
     padding: 0.8rem 1.5rem;
     background: var(--bg-primary);
     border-bottom: 1px solid var(--border-color);
+    border-radius: 10px 10px 0 0;
 
     span {
       font-size: 0.75rem;

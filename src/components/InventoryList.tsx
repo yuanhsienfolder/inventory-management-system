@@ -99,11 +99,12 @@ export default function InventoryList() {
     <AddItemForm onAdd={handleAdd} />
     <div className="item-list">
       <div className="item-list__header">
-        <span>Item Name</span>
-        <span>Quantity</span>
-        <span>Status</span>
-        <span></span>
-      </div>
+  <span></span>
+  <span>Item Name</span>
+  <span>Quantity</span>
+  <span>Status</span>
+  <span></span>
+</div>
       {items.map((item) => (
         <InventoryItem
           key={item.id}
