@@ -1,40 +1,40 @@
-import {useState} from "react";
+import { useState } from "react";
+import "./AddItemForm.scss";
 
 type AddItemFormProps = {
-    onAdd: (name: string, quantity: number) => void;
+  onAdd: (name: string, quantity: number) => void;
 };
 
 export default function AddItemForm({ onAdd }: AddItemFormProps) {
-    const [name, setName] = useState("");
-    const [quantity, setQuantity] = useState(0);
+  const [name, setName] = useState("");
+  const [quantity, setQuantity] = useState(0);
 
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!name.trim()) return;
+    onAdd(name, quantity);
+    setName("");
+    setQuantity(0);
+  }
 
-    function handleSubmit(event: React.FormEvent) {
-        event.preventDefault();
-        onAdd(name,quantity);
-        setName("");
-        setQuantity(0);
-    }
-
-
-return (
-    <form onSubmit={handleSubmit}>
-        <input
-            type="text"
-            placeholder="item name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-        />
-        <input
+  return (
+    <form className="add-item-form" onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Item name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <input
         type="number"
-            placeholder="Quantity"
-            value={quantity}
-            onChange={(e) => setQuantity(Number(e.target.value))}
-        />
-        <button type="submit">Add Item</button>
-        
-
+        placeholder="Qty"
+        value={quantity}
+        min={0}
+        onChange={(e) => setQuantity(Number(e.target.value))}
+      />
+      <button type="submit" className="btn-primary">
+        + Add Item
+      </button>
     </form>
-)
-
+  );
 }
