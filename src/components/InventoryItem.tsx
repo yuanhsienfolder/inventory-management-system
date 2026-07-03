@@ -4,16 +4,23 @@ import "./InventoryItem.scss";
 type InventoryItemProps = {
   name: string;
   quantity: number;
+  storageLocation: string;
+  updatedAt: string;
   onDelete: () => void;
 };
 
-export default function InventoryItem({ name, quantity, onDelete }: InventoryItemProps) {
+export default function InventoryItem({ name, quantity, storageLocation, updatedAt, onDelete }: InventoryItemProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   function getStatus() {
     if (quantity === 0) return { label: "Out of Stock", className: "danger" };
     if (quantity < 10) return { label: "Low Stock", className: "warning" };
     return { label: "In Stock", className: "success" };
+  }
+
+  function formatDate(isoString: string) {
+    const date = new Date(isoString);
+    return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
   }
 
   const status = getStatus();
@@ -23,6 +30,8 @@ export default function InventoryItem({ name, quantity, onDelete }: InventoryIte
       <input type="checkbox" className="item-row__checkbox" />
       <span className="item-row__name">{name}</span>
       <span className="item-row__qty mono">{quantity}</span>
+      <span className="item-row__location">{storageLocation}</span>
+      <span className="item-row__date">{formatDate(updatedAt)}</span>
       <span className={`badge badge--${status.className}`}>{status.label}</span>
       <div className="item-row__menu-wrapper">
         <button
