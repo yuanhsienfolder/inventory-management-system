@@ -1,17 +1,22 @@
 ---
+import "../styles/global.scss";
 const pageTitle = "Inventory Management System";
 import Greeting from '../components/Greeting.tsx';
 import InventoryList from "../components/InventoryList.tsx";
+import Auth from "../components/Auth.tsx";
+import App from "../components/App.tsx";
 ---
 
 <html>
   <head>
     <title>{pageTitle}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   </head>
   <body>
     <h1>{pageTitle}</h1>
     <Greeting client:load />
-
-    <InventoryList client:load />
+    <App client:load />
   </body>
 </html>

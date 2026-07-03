@@ -1,0 +1,66 @@
+// global.scss
+// Ito yung "single source of truth" ng buong color system natin.
+// Ginagamit natin CSS custom properties (--variable) dahil kailangan
+// nating baguhin sila sa runtime pag nag-toggle ng dark/light mode.
+
+:root {
+  // Light mode (default)
+  --bg-primary: #f8f9fa;
+  --bg-surface: #ffffff;
+  --border-color: #e1e4e8;
+  --text-primary: #1c2128;
+  --text-secondary: #6b7280;
+
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+
+  --success: #16a34a;
+  --success-bg: #dcfce7;
+  --warning: #ca8a04;
+  --warning-bg: #fef9c3;
+  --danger: #dc2626;
+  --danger-bg: #fee2e2;
+
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0f1419;
+  --bg-surface: #1a2028;
+  --border-color: #2a323d;
+  --text-primary: #e8eaed;
+  --text-secondary: #8b95a1;
+
+  --accent: #3b82f6;
+  --accent-hover: #60a5fa;
+
+  --success: #22c55e;
+  --success-bg: rgba(34, 197, 94, 0.12);
+  --warning: #eab308;
+  --warning-bg: rgba(234, 179, 8, 0.12);
+  --danger: #ef4444;
+  --danger-bg: rgba(239, 68, 68, 0.12);
+
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+// Base reset — konting "cleanup" para consistent lahat ng browsers
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", -apple-system, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+h1, h2, h3 {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+}
+
+.mono {
+  font-family: "JetBrains Mono", monospace;
+}

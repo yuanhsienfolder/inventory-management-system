@@ -1,0 +1,68 @@
+.item-row {
+  display: grid;
+  grid-template-columns: 1fr 100px 130px 40px;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: var(--bg-primary);
+  }
+
+  &__name {
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  &__qty {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+  }
+
+  &__delete {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+      background: var(--danger-bg);
+      color: var(--danger);
+    }
+  }
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  width: fit-content;
+
+  &--success {
+    background: var(--success-bg);
+    color: var(--success);
+  }
+
+  &--warning {
+    background: var(--warning-bg);
+    color: var(--warning);
+  }
+
+  &--danger {
+    background: var(--danger-bg);
+    color: var(--danger);
+  }
+}
