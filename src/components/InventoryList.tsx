@@ -43,20 +43,23 @@ export default function InventoryList() {
   }
 
   async function handleAdd(name: string, quantity: number, storageLocation: string) {
-    const { data, error } = await supabase
-      .from("items")
-      .insert([{ name, quantity, storage_location: storageLocation }])
-      .select();
+  const { data: userData } = await supabase.auth.getUser();
+  const userId = userData.user?.id;
 
-    if (error) {
-      console.error("Error adding item:", error);
-      return;
-    }
+  const { data, error } = await supabase
+    .from("items")
+    .insert([{ name, quantity, storage_location: storageLocation, user_id: userId }])
+    .select();
 
-    if (data) {
-      setItems([...items, data[0]]);
-    }
+  if (error) {
+    console.error("Error adding item:", error);
+    return;
   }
+
+  if (data) {
+    setItems([...items, data[0]]);
+  }
+}
 
   const totalItems = items.length;
   const totalUnits = items.reduce((sum, item) => sum + item.quantity, 0);
