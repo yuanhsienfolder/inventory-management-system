@@ -62,6 +62,27 @@ export default function InventoryList() {
   }
 }
 
+async function handleUpdate(id: number, name: string, quantity: number, storageLocation: string) {
+  
+  const { data, error } = await supabase
+  .from("items")
+  .update({name, quantity, storage_location: storageLocation, updated_at: new Date().toISOString()})
+  .eq("id", id)
+  .select();
+
+
+  if (error) {
+    console.error("Error updating item:", error);
+    return;
+  }
+
+  if (data) {
+    setItems(items.map((item) => 
+      item.id === id ? data[0] : item));
+  
+
+}};
+
   const totalItems = items.length;
 const totalUnits = items.reduce((sum, item) => sum + item.quantity, 0);
 const lowStockCount = items.filter((item) => item.quantity < 10).length;
@@ -70,7 +91,6 @@ const filteredItems = items.filter((item) =>
   item.name.toLowerCase().includes(searchQuery.toLowerCase()
 
 )
-
 
 
 );
@@ -91,13 +111,15 @@ const filteredItems = items.filter((item) =>
           <span></span>
         </div>
         {filteredItems.map((item) => (
-  <InventoryItem
+  <InventoryItem 
     key={item.id}
     name={item.name}
     quantity={item.quantity}
     storageLocation={item.storage_location}
     updatedAt={item.updated_at}
     onDelete={() => handleDelete(item.id)}
+    id={item.id}
+    onUpdate={handleUpdate}
   />
 ))}
       </div>

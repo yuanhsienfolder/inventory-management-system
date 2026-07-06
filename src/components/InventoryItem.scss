@@ -52,6 +52,54 @@
       color: var(--text-primary);
     }
   }
+  &--editing{
+      background: var(--bg-primary);
+  }
+}
+
+.item-row__edit-input {
+  padding: 0.4rem 0.6rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-family: "Inter", sans-serif;
+  font-size: 0.9rem;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.item-row__edit-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-save {
+  padding: 0.4rem 0.8rem;
+  background: var(--success);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-cancel {
+  padding: 0.4rem 0.8rem;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--text-secondary);
+  }
 }
 
 .badge {
