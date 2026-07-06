@@ -9,6 +9,8 @@ type InventoryItemProps = {
   updatedAt: string;
   onDelete: () => void;
   onUpdate: (id: number, name: string, quantity: number, storageLocation: string) => void;
+  isSelected: boolean;
+  onToggleSelect: () => void;
 };
 
 export default function InventoryItem({
@@ -19,6 +21,9 @@ export default function InventoryItem({
   updatedAt,
   onDelete,
   onUpdate,
+  isSelected,
+  onToggleSelect,
+ 
 }: InventoryItemProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -26,6 +31,7 @@ export default function InventoryItem({
   const [editName, setEditName] = useState(name);
   const [editQuantity, setEditQuantity] = useState(quantity);
   const [editLocation, setEditLocation] = useState(storageLocation);
+
 
   function getStatus() {
     if (quantity === 0) return { label: "Out of Stock", className: "danger" };
@@ -90,7 +96,12 @@ export default function InventoryItem({
 
   return (
     <div className="item-row">
-      <input type="checkbox" className="item-row__checkbox" />
+      <input
+  type="checkbox"
+  className="item-row__checkbox"
+  checked={isSelected}
+  onChange={onToggleSelect}
+/>
       <span className="item-row__name">{name}</span>
       <span className="item-row__qty mono">{quantity}</span>
       <span className="item-row__location">{storageLocation}</span>
@@ -120,6 +131,8 @@ export default function InventoryItem({
             </button>
           </div>
         )}
+
+        
       </div>
     </div>
   );

@@ -166,3 +166,21 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .item-list__header {
+    display: none;
+  }
+
+  .item-row {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "name menu"
+      "qty qty"
+      "location location"
+      "date date"
+      "status status";
+    padding: 1rem;
+    gap: 0.4rem;
+  }
+}

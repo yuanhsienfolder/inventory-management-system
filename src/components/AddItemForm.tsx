@@ -9,15 +9,27 @@ export default function AddItemForm({ onAdd }: AddItemFormProps) {
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState(0);
   const [storageLocation, setStorageLocation] = useState("");
+  const [error, setError] = useState("");
 
   function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!name.trim()) return;
-    onAdd(name, quantity, storageLocation || "Warehouse A");
-    setName("");
-    setQuantity(0);
-    setStorageLocation("");
+  e.preventDefault();
+  setError("");
+
+  if (!name.trim()) {
+    setError("Item name is required");
+    return;
   }
+
+  if (quantity < 0) {
+    setError("Quantity cannot be negative");
+    return;
+  }
+
+  onAdd(name, quantity, storageLocation || "Warehouse A");
+  setName("");
+  setQuantity(0);
+  setStorageLocation("");
+}
 
   return (
     <form className="add-item-form" onSubmit={handleSubmit}>
@@ -42,6 +54,7 @@ export default function AddItemForm({ onAdd }: AddItemFormProps) {
       />
       <button type="submit" className="btn-primary">
         + Add Item
+        {error && <p className="form-error">{error}</p>}
       </button>
     </form>
   );
