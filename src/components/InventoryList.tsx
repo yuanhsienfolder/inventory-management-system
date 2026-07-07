@@ -41,6 +41,32 @@ const [locationFilter, setLocationFilter] = useState("");
   }
 }
 
+function exportToCSV() {
+  const headers = ["Name", "SKU", "Quantity", "Category", "Location", "Assigned To", "Last Updated"];
+
+  const rows = filteredItems.map((item) => [
+    item.name,
+    item.sku,
+    item.quantity,
+    item.category,
+    item.storage_location,
+    item.assigned_to,
+    item.updated_at,
+  ]);
+
+  const csvContent = [headers, ...rows]
+    .map((row) => row.map((value) => `"${value}"`).join(","))
+    .join("\n");
+
+  const blob = new Blob([csvContent], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `inventory-export-${new Date().toISOString().split("T")[0]}.csv`;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
  async function confirmDelete() {
   if (confirmDeleteId === null) return;
 
@@ -235,6 +261,9 @@ const uniqueLocations = [...new Set(items.map((item) => item.storage_location))]
 
 
 <div className="filter-bar">
+  <button className="btn-export" onClick={exportToCSV}>
+  Export CSV
+</button>
   <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
     <option value="">All Categories</option>
     {uniqueCategories.map((cat) => (
