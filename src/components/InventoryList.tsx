@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import InventoryItem from "./InventoryItem";
 import AddItemForm from "./AddItemForm";
 import { supabase } from "../lib/supabase";
@@ -7,44 +7,24 @@ import "./InventoryList.scss";
 import SearchBar from "./SearchBar";
 import Toast from "./Toast";
 import ConfirmModal from "./ConfirmModal";
+import type { Item } from "./App";
 
-type Item = {
-  id: number;
-  name: string;
-  quantity: number;
-  storage_location: string;
-  updated_at: string;
+type InventoryListProps = {
+  items: Item[];
+  setItems: React.Dispatch<React.SetStateAction<Item[]>>;
+  loading: boolean;
+  refetch: () => void;
 };
 
-export default function InventoryList() {
-  const [items, setItems] = useState<Item[]>([]);
+export default function InventoryList({ items, setItems, loading, refetch }: InventoryListProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
-  const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
-
-  useEffect(() => {
-    fetchItems();
-  }, []);
 
   function showToast(message: string, type: "success" | "error") {
     setToast({ message, type });
     setTimeout(() => setToast(null), 3000);
-  }
-
-  async function fetchItems() {
-    setLoading(true);
-    const { data, error } = await supabase.from("items").select();
-
-    if (error) {
-      console.error("Error fetching items:", error);
-      setLoading(false);
-      return;
-    }
-
-    setItems(data ?? []);
-    setLoading(false);
   }
 
   async function confirmDelete() {

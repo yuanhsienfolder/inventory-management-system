@@ -6,8 +6,10 @@ type StatsBarProps = {
   lowStockCount: number;
 };
 
+
 export default function StatsBar({ totalItems, totalUnits, lowStockCount }: StatsBarProps) {
   return (
+    
     <div className="stats-bar">
       <div className="stat-card">
         <span className="stat-card__label">Total Items</span>

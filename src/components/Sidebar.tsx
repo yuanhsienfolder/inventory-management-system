@@ -1,13 +1,18 @@
 import "./Sidebar.scss";
 
+type SidebarProps ={
+      activeView: string;
+      onNavigate: (view: "dashboard" | "inventory" | "reports") => void;
+    };
+    
+
 const NAV_ITEMS = [
-  { label: "Dashboard", icon: "▦" },
-  { label: "Inventory", icon: "◫" },
-  { label: "Reports", icon: "▤" },
-  { label: "Settings", icon: "⚙" },
+  { label: "Dashboard", icon: "▦", value: "dashboard" as const },
+  { label: "Inventory", icon: "◫", value: "inventory" as const },
+  { label: "Reports", icon: "▤", value: "reports" as const },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ activeView, onNavigate }: SidebarProps) {
   return (
     <aside className="sidebar">
       <div className="sidebar__brand">
@@ -18,7 +23,8 @@ export default function Sidebar() {
         {NAV_ITEMS.map((item) => (
           <button
             key={item.label}
-            className={`sidebar__link ${item.label === "Inventory" ? "sidebar__link--active" : ""}`}
+            className={`sidebar__link ${item.value === activeView ? "sidebar__link--active" : ""}`}
+            onClick={()=>onNavigate(item.value)}
           >
             <span className="sidebar__icon">{item.icon}</span>
             {item.label}
