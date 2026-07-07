@@ -103,12 +103,21 @@ export default function InventoryItem({
           value={editQuantity}
           onChange={(e) => setEditQuantity(Number(e.target.value))}
         />
-        <input
-          type="text"
-          className="item-row__edit-input"
-          value={editCategory}
-          onChange={(e) => setEditCategory(e.target.value)}
-        />
+        <select
+  className="item-row__edit-input"
+  value={editCategory}
+  onChange={(e) => setEditCategory(e.target.value)}
+>
+  <option value="">Select category</option>
+  <option value="Peripherals">Peripherals</option>
+  <option value="Cables">Cables</option>
+  <option value="Monitors">Monitors</option>
+  <option value="Laptops">Laptops</option>
+  <option value="Storage">Storage</option>
+  <option value="Networking">Networking</option>
+  <option value="Accessories">Accessories</option>
+  <option value="Other">Other</option>
+</select>
         <input
           type="text"
           className="item-row__edit-input"

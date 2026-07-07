@@ -72,12 +72,17 @@ export default function AddItemForm({ onAdd }: AddItemFormProps) {
         min={0}
         onChange={(e) => setQuantity(Number(e.target.value))}
       />
-      <input
-        type="text"
-        placeholder="Category"
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-      />
+      <select value={category} onChange={(e) => setCategory(e.target.value)}>
+  <option value="">Select category</option>
+  <option value="Peripherals">Peripherals</option>
+  <option value="Cables">Cables</option>
+  <option value="Monitors">Monitors</option>
+  <option value="Laptops">Laptops</option>
+  <option value="Storage">Storage</option>
+  <option value="Networking">Networking</option>
+  <option value="Accessories">Accessories</option>
+  <option value="Other">Other</option>
+</select>
       <input
         type="text"
         placeholder="Storage location"

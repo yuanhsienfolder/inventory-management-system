@@ -6,6 +6,22 @@ type ReportsProps = {
 };
 
 export default function Reports({ items }: ReportsProps) {
+
+  const categoryMap: Record<string, { count: number; units: number }> = {};
+
+items.forEach((item) => {
+  const cat = item.category || "Uncategorized";
+  if (!categoryMap[cat]) {
+    categoryMap[cat] = { count: 0, units: 0 };
+  }
+  categoryMap[cat].count += 1;
+  categoryMap[cat].units += item.quantity;
+});
+
+const categoryRows = Object.entries(categoryMap).map(([category, stats]) => ({
+  category,
+  ...stats,
+}));
   const locationMap: Record<string, { count: number; units: number }> = {};
 
   items.forEach((item) => {
@@ -31,6 +47,31 @@ export default function Reports({ items }: ReportsProps) {
 
       <div className="report-section">
         <h3>Breakdown by Location</h3>
+        <div className="report-section">
+  <h3>Breakdown by Category</h3>
+  {categoryRows.length === 0 ? (
+    <p className="reports-empty">No data yet</p>
+  ) : (
+    <table className="report-table">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Item Types</th>
+          <th>Total Units</th>
+        </tr>
+      </thead>
+      <tbody>
+        {categoryRows.map((row) => (
+          <tr key={row.category}>
+            <td>{row.category}</td>
+            <td className="mono">{row.count}</td>
+            <td className="mono">{row.units}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )}
+</div>
         {locationRows.length === 0 ? (
           <p className="reports-empty">No data yet</p>
         ) : (
