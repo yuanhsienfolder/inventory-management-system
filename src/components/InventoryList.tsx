@@ -23,6 +23,9 @@ export default function InventoryList({ items, setItems, loading, refetch }: Inv
   const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
   const [sortField, setSortField] = useState<keyof Item>("updated_at");
 const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
+const [categoryFilter, setCategoryFilter] = useState("");
+const [statusFilter, setStatusFilter] = useState("");
+const [locationFilter, setLocationFilter] = useState("");
 
   function showToast(message: string, type: "success" | "error") {
     setToast({ message, type });
@@ -169,6 +172,15 @@ function getSortIndicator(field: keyof Item) {
 
   const filteredItems = items
   .filter((item) => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
+  .filter((item) => (categoryFilter ? item.category === categoryFilter : true))
+  .filter((item) => (locationFilter ? item.storage_location === locationFilter : true))
+  .filter((item) => {
+    if (!statusFilter) return true;
+    if (statusFilter === "out") return item.quantity === 0;
+    if (statusFilter === "low") return item.quantity > 0 && item.quantity < 10;
+    if (statusFilter === "in") return item.quantity >= 10;
+    return true;
+  })
   .sort((a, b) => {
     const aVal = a[sortField];
     const bVal = b[sortField];
@@ -181,13 +193,55 @@ function getSortIndicator(field: keyof Item) {
     const bStr = String(bVal).toLowerCase();
     if (aStr < bStr) return sortDirection === "asc" ? -1 : 1;
     if (aStr > bStr) return sortDirection === "asc" ? 1 : -1;
+    
     return 0;
   });
+const uniqueCategories = [...new Set(items.map((item) => item.category))].filter(Boolean);
+const uniqueLocations = [...new Set(items.map((item) => item.storage_location))].filter(Boolean);
 
   return (
     <div>
       <SearchBar value={searchQuery} onChange={setSearchQuery} />
-      <StatsBar totalItems={totalItems} totalUnits={totalUnits} lowStockCount={lowStockCount} />
+
+
+<div className="filter-bar">
+  <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
+    <option value="">All Categories</option>
+    {uniqueCategories.map((cat) => (
+      <option key={cat} value={cat}>{cat}</option>
+    ))}
+  </select>
+
+  <select value={locationFilter} onChange={(e) => setLocationFilter(e.target.value)}>
+    <option value="">All Locations</option>
+    {uniqueLocations.map((loc) => (
+      <option key={loc} value={loc}>{loc}</option>
+    ))}
+  </select>
+
+  <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+    <option value="">All Statuses</option>
+    <option value="in">In Stock</option>
+    <option value="low">Low Stock</option>
+    <option value="out">Out of Stock</option>
+  </select>
+
+  {(categoryFilter || locationFilter || statusFilter) && (
+    <button
+      className="btn-clear-filters"
+      onClick={() => {
+        setCategoryFilter("");
+        setLocationFilter("");
+        setStatusFilter("");
+      }}
+    >
+      Clear Filters
+    </button>
+  )}
+</div>
+
+<StatsBar totalItems={totalItems} totalUnits={totalUnits} lowStockCount={lowStockCount} />
+
       <AddItemForm onAdd={handleAdd} />
 
       {selectedIds.length > 0 && (
