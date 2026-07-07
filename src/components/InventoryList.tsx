@@ -21,11 +21,22 @@ export default function InventoryList({ items, setItems, loading, refetch }: Inv
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
+  const [sortField, setSortField] = useState<keyof Item>("updated_at");
+const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
 
   function showToast(message: string, type: "success" | "error") {
     setToast({ message, type });
     setTimeout(() => setToast(null), 3000);
   }
+  function handleSort(field: keyof Item) {
+    
+  if (sortField === field) {
+    setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+  } else {
+    setSortField(field);
+    setSortDirection("asc");
+  }
+}
 
   async function confirmDelete() {
     if (confirmDeleteId === null) return;
@@ -117,6 +128,11 @@ export default function InventoryList({ items, setItems, loading, refetch }: Inv
   }
 }
 
+function getSortIndicator(field: keyof Item) {
+  if (sortField !== field) return "";
+  return sortDirection === "asc" ? " ↑" : " ↓";
+}
+
   async function handleBulkDelete() {
     const { error } = await supabase.from("items").delete().in("id", selectedIds);
 
@@ -151,9 +167,22 @@ export default function InventoryList({ items, setItems, loading, refetch }: Inv
   const totalUnits = items.reduce((sum, item) => sum + item.quantity, 0);
   const lowStockCount = items.filter((item) => item.quantity < 10).length;
 
-  const filteredItems = items.filter((item) =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredItems = items
+  .filter((item) => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
+  .sort((a, b) => {
+    const aVal = a[sortField];
+    const bVal = b[sortField];
+
+    if (typeof aVal === "number" && typeof bVal === "number") {
+      return sortDirection === "asc" ? aVal - bVal : bVal - aVal;
+    }
+
+    const aStr = String(aVal).toLowerCase();
+    const bStr = String(bVal).toLowerCase();
+    if (aStr < bStr) return sortDirection === "asc" ? -1 : 1;
+    if (aStr > bStr) return sortDirection === "asc" ? 1 : -1;
+    return 0;
+  });
 
   return (
     <div>
@@ -174,13 +203,19 @@ export default function InventoryList({ items, setItems, loading, refetch }: Inv
     checked={selectedIds.length === filteredItems.length && filteredItems.length > 0}
     onChange={toggleSelectAll}
   />
-  <span>Item Name</span>
+  <span className="sortable" onClick={() => handleSort("name")}>
+    Item Name{getSortIndicator("name")}
+  </span>
   <span>SKU</span>
-  <span>Quantity</span>
+  <span className="sortable" onClick={() => handleSort("quantity")}>
+    Quantity{getSortIndicator("quantity")}
+  </span>
   <span>Category</span>
   <span>Location</span>
   <span>Assigned To</span>
-  <span>Last Updated</span>
+  <span className="sortable" onClick={() => handleSort("updated_at")}>
+    Last Updated{getSortIndicator("updated_at")}
+  </span>
   <span>Status</span>
   <span></span>
 </div>

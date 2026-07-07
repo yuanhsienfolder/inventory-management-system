@@ -20,6 +20,14 @@
       letter-spacing: 0.04em;
       color: var(--text-secondary);
     }
+    .sortable {
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    color: var(--text-primary);
+  }
+}
   }
 }
 
