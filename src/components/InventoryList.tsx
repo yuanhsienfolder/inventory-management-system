@@ -41,22 +41,27 @@ const [locationFilter, setLocationFilter] = useState("");
   }
 }
 
-  async function confirmDelete() {
-    if (confirmDeleteId === null) return;
+ async function confirmDelete() {
+  if (confirmDeleteId === null) return;
 
-    const { error } = await supabase.from("items").delete().eq("id", confirmDeleteId);
+  const itemToDelete = items.find((item) => item.id === confirmDeleteId);
 
-    if (error) {
-      console.error("Error deleting item:", error);
-      showToast("Failed to delete item", "error");
-      setConfirmDeleteId(null);
-      return;
-    }
+  const { error } = await supabase.from("items").delete().eq("id", confirmDeleteId);
 
-    setItems(items.filter((item) => item.id !== confirmDeleteId));
-    showToast("Item deleted", "success");
+  if (error) {
+    console.error("Error deleting item:", error);
+    showToast("Failed to delete item", "error");
     setConfirmDeleteId(null);
+    return;
   }
+
+  setItems(items.filter((item) => item.id !== confirmDeleteId));
+  showToast("Item deleted", "success");
+  if (itemToDelete) {
+    logMovement(itemToDelete.name, "Deleted", itemToDelete.quantity, null);
+  }
+  setConfirmDeleteId(null);
+}
 
   async function handleAdd(
   name: string,
@@ -93,6 +98,7 @@ const [locationFilter, setLocationFilter] = useState("");
   if (data) {
     setItems([...items, data[0]]);
     showToast("Item added successfully", "success");
+    logMovement(name, "Created", null, quantity);
   }
 }
 
@@ -105,6 +111,9 @@ const [locationFilter, setLocationFilter] = useState("");
   category: string,
   assignedTo: string
 ) {
+  const oldItem = items.find((item) => item.id === id);
+  const oldQuantity = oldItem ? oldItem.quantity : null;
+
   const { data, error } = await supabase
     .from("items")
     .update({
@@ -128,7 +137,28 @@ const [locationFilter, setLocationFilter] = useState("");
   if (data) {
     setItems(items.map((item) => (item.id === id ? data[0] : item)));
     showToast("Item updated successfully", "success");
+    logMovement(name, "Updated", oldQuantity, quantity);
   }
+}
+
+async function logMovement(
+  itemName: string,
+  action: string,
+  previousQuantity: number | null,
+  newQuantity: number | null
+) {
+  const { data: userData } = await supabase.auth.getUser();
+  const userId = userData.user?.id;
+
+  await supabase.from("stock_movements").insert([
+    {
+      item_name: itemName,
+      action,
+      previous_quantity: previousQuantity,
+      new_quantity: newQuantity,
+      user_id: userId,
+    },
+  ]);
 }
 
 function getSortIndicator(field: keyof Item) {

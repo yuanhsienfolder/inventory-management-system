@@ -8,6 +8,7 @@ import Dashboard from "./Dashboard";
 import Reports from "./Reports";
 import type { Session } from "@supabase/supabase-js";
 import "./App.scss";
+import History from "./History";
 
 export type Item = {
   id: number;
@@ -22,9 +23,10 @@ export type Item = {
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(null);
-  const [activeView, setActiveView] = useState<"dashboard" | "inventory" | "reports">("dashboard");
+  const [activeView, setActiveView] = useState<"dashboard" | "inventory" | "reports" | "history">("dashboard");
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
+  
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -41,6 +43,7 @@ export default function App() {
   useEffect(() => {
     if (session) fetchItems();
   }, [session]);
+  
 
   async function fetchItems() {
     setLoading(true);
@@ -72,6 +75,7 @@ export default function App() {
         {activeView === "dashboard" && <Dashboard items={items} loading={loading} />}
         {activeView === "inventory" && <InventoryList items={items} setItems={setItems} loading={loading} refetch={fetchItems} />}
         {activeView === "reports" && <Reports items={items} />}
+        {activeView === "history" && <History />}
       </div>
     </div>
   );

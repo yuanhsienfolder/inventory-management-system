@@ -1,0 +1,45 @@
+.history {
+  padding: 1.5rem 2rem;
+
+  &__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 1.25rem;
+  }
+}
+
+.history-list {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.history-item {
+  display: grid;
+  grid-template-columns: 110px 1fr 120px 140px;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &__name {
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  &__change {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+
+  &__time {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-align: right;
+  }
+}

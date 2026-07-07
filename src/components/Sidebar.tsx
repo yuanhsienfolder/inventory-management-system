@@ -1,15 +1,16 @@
 import "./Sidebar.scss";
 
-type SidebarProps ={
-      activeView: string;
-      onNavigate: (view: "dashboard" | "inventory" | "reports") => void;
-    };
+type SidebarProps = {
+  activeView: string;
+  onNavigate: (view: "dashboard" | "inventory" | "reports" | "history") => void;
+};
     
 
 const NAV_ITEMS = [
   { label: "Dashboard", icon: "▦", value: "dashboard" as const },
   { label: "Inventory", icon: "◫", value: "inventory" as const },
   { label: "Reports", icon: "▤", value: "reports" as const },
+  { label: "History", icon: "◷", value: "history" as const },
 ];
 
 export default function Sidebar({ activeView, onNavigate }: SidebarProps) {
