@@ -2,34 +2,54 @@ import { useState } from "react";
 import "./AddItemForm.scss";
 
 type AddItemFormProps = {
-  onAdd: (name: string, quantity: number, storageLocation: string) => void;
+  onAdd: (
+    name: string,
+    quantity: number,
+    storageLocation: string,
+    sku: string,
+    category: string,
+    assignedTo: string
+  ) => void;
 };
 
 export default function AddItemForm({ onAdd }: AddItemFormProps) {
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState(0);
   const [storageLocation, setStorageLocation] = useState("");
+  const [sku, setSku] = useState("");
+  const [category, setCategory] = useState("");
+  const [assignedTo, setAssignedTo] = useState("");
   const [error, setError] = useState("");
 
   function handleSubmit(e: React.FormEvent) {
-  e.preventDefault();
-  setError("");
+    e.preventDefault();
+    setError("");
 
-  if (!name.trim()) {
-    setError("Item name is required");
-    return;
+    if (!name.trim()) {
+      setError("Item name is required");
+      return;
+    }
+
+    if (quantity < 0) {
+      setError("Quantity cannot be negative");
+      return;
+    }
+
+    onAdd(
+      name,
+      quantity,
+      storageLocation || "Warehouse A",
+      sku,
+      category || "General",
+      assignedTo
+    );
+    setName("");
+    setQuantity(0);
+    setStorageLocation("");
+    setSku("");
+    setCategory("");
+    setAssignedTo("");
   }
-
-  if (quantity < 0) {
-    setError("Quantity cannot be negative");
-    return;
-  }
-
-  onAdd(name, quantity, storageLocation || "Warehouse A");
-  setName("");
-  setQuantity(0);
-  setStorageLocation("");
-}
 
   return (
     <form className="add-item-form" onSubmit={handleSubmit}>
@@ -40,6 +60,12 @@ export default function AddItemForm({ onAdd }: AddItemFormProps) {
         onChange={(e) => setName(e.target.value)}
       />
       <input
+        type="text"
+        placeholder="SKU"
+        value={sku}
+        onChange={(e) => setSku(e.target.value)}
+      />
+      <input
         type="number"
         placeholder="Qty"
         value={quantity}
@@ -48,13 +74,25 @@ export default function AddItemForm({ onAdd }: AddItemFormProps) {
       />
       <input
         type="text"
+        placeholder="Category"
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+      />
+      <input
+        type="text"
         placeholder="Storage location"
         value={storageLocation}
         onChange={(e) => setStorageLocation(e.target.value)}
       />
+      <input
+        type="text"
+        placeholder="Assigned to"
+        value={assignedTo}
+        onChange={(e) => setAssignedTo(e.target.value)}
+      />
+      {error && <p className="form-error">{error}</p>}
       <button type="submit" className="btn-primary">
         + Add Item
-        {error && <p className="form-error">{error}</p>}
       </button>
     </form>
   );

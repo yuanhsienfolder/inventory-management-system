@@ -7,8 +7,19 @@ type InventoryItemProps = {
   quantity: number;
   storageLocation: string;
   updatedAt: string;
+  sku: string;
+  category: string;
+  assignedTo: string;
   onDelete: () => void;
-  onUpdate: (id: number, name: string, quantity: number, storageLocation: string) => void;
+  onUpdate: (
+    id: number,
+    name: string,
+    quantity: number,
+    storageLocation: string,
+    sku: string,
+    category: string,
+    assignedTo: string
+  ) => void;
   isSelected: boolean;
   onToggleSelect: () => void;
 };
@@ -19,11 +30,13 @@ export default function InventoryItem({
   quantity,
   storageLocation,
   updatedAt,
+  sku,
+  category,
+  assignedTo,
   onDelete,
   onUpdate,
   isSelected,
   onToggleSelect,
- 
 }: InventoryItemProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -31,7 +44,9 @@ export default function InventoryItem({
   const [editName, setEditName] = useState(name);
   const [editQuantity, setEditQuantity] = useState(quantity);
   const [editLocation, setEditLocation] = useState(storageLocation);
-
+  const [editSku, setEditSku] = useState(sku);
+  const [editCategory, setEditCategory] = useState(category);
+  const [editAssignedTo, setEditAssignedTo] = useState(assignedTo);
 
   function getStatus() {
     if (quantity === 0) return { label: "Out of Stock", className: "danger" };
@@ -53,11 +68,14 @@ export default function InventoryItem({
     setEditName(name);
     setEditQuantity(quantity);
     setEditLocation(storageLocation);
+    setEditSku(sku);
+    setEditCategory(category);
+    setEditAssignedTo(assignedTo);
     setIsEditing(false);
   }
 
   function handleSave() {
-    onUpdate(id, editName, editQuantity, editLocation);
+    onUpdate(id, editName, editQuantity, editLocation, editSku, editCategory, editAssignedTo);
     setIsEditing(false);
   }
 
@@ -74,6 +92,12 @@ export default function InventoryItem({
           onChange={(e) => setEditName(e.target.value)}
         />
         <input
+          type="text"
+          className="item-row__edit-input"
+          value={editSku}
+          onChange={(e) => setEditSku(e.target.value)}
+        />
+        <input
           type="number"
           className="item-row__edit-input"
           value={editQuantity}
@@ -82,8 +106,20 @@ export default function InventoryItem({
         <input
           type="text"
           className="item-row__edit-input"
+          value={editCategory}
+          onChange={(e) => setEditCategory(e.target.value)}
+        />
+        <input
+          type="text"
+          className="item-row__edit-input"
           value={editLocation}
           onChange={(e) => setEditLocation(e.target.value)}
+        />
+        <input
+          type="text"
+          className="item-row__edit-input"
+          value={editAssignedTo}
+          onChange={(e) => setEditAssignedTo(e.target.value)}
         />
         <span></span>
         <div className="item-row__edit-actions">
@@ -97,14 +133,17 @@ export default function InventoryItem({
   return (
     <div className="item-row">
       <input
-  type="checkbox"
-  className="item-row__checkbox"
-  checked={isSelected}
-  onChange={onToggleSelect}
-/>
+        type="checkbox"
+        className="item-row__checkbox"
+        checked={isSelected}
+        onChange={onToggleSelect}
+      />
       <span className="item-row__name">{name}</span>
+      <span className="item-row__sku mono">{sku}</span>
       <span className="item-row__qty mono">{quantity}</span>
+      <span className="item-row__category">{category}</span>
       <span className="item-row__location">{storageLocation}</span>
+      <span className="item-row__assigned">{assignedTo || "—"}</span>
       <span className="item-row__date">{formatDate(updatedAt)}</span>
       <span className={`badge badge--${status.className}`}>{status.label}</span>
       <div className="item-row__menu-wrapper">
@@ -131,8 +170,6 @@ export default function InventoryItem({
             </button>
           </div>
         )}
-
-        
       </div>
     </div>
   );

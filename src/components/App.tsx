@@ -15,6 +15,9 @@ export type Item = {
   quantity: number;
   storage_location: string;
   updated_at: string;
+  sku: string;
+  category: string;
+  assigned_to: string;
 };
 
 export default function App() {

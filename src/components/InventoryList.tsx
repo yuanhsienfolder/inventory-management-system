@@ -44,45 +44,78 @@ export default function InventoryList({ items, setItems, loading, refetch }: Inv
     setConfirmDeleteId(null);
   }
 
-  async function handleAdd(name: string, quantity: number, storageLocation: string) {
-    const { data: userData } = await supabase.auth.getUser();
-    const userId = userData.user?.id;
+  async function handleAdd(
+  name: string,
+  quantity: number,
+  storageLocation: string,
+  sku: string,
+  category: string,
+  assignedTo: string
+) {
+  const { data: userData } = await supabase.auth.getUser();
+  const userId = userData.user?.id;
 
-    const { data, error } = await supabase
-      .from("items")
-      .insert([{ name, quantity, storage_location: storageLocation, user_id: userId }])
-      .select();
+  const { data, error } = await supabase
+    .from("items")
+    .insert([
+      {
+        name,
+        quantity,
+        storage_location: storageLocation,
+        sku,
+        category,
+        assigned_to: assignedTo,
+        user_id: userId,
+      },
+    ])
+    .select();
 
-    if (error) {
-      console.error("Error adding item:", error);
-      showToast("Failed to add item", "error");
-      return;
-    }
-
-    if (data) {
-      setItems([...items, data[0]]);
-      showToast("Item added successfully", "success");
-    }
+  if (error) {
+    console.error("Error adding item:", error);
+    showToast("Failed to add item", "error");
+    return;
   }
 
-  async function handleUpdate(id: number, name: string, quantity: number, storageLocation: string) {
-    const { data, error } = await supabase
-      .from("items")
-      .update({ name, quantity, storage_location: storageLocation, updated_at: new Date().toISOString() })
-      .eq("id", id)
-      .select();
-
-    if (error) {
-      console.error("Error updating item:", error);
-      showToast("Failed to update item", "error");
-      return;
-    }
-
-    if (data) {
-      setItems(items.map((item) => (item.id === id ? data[0] : item)));
-      showToast("Item updated successfully", "success");
-    }
+  if (data) {
+    setItems([...items, data[0]]);
+    showToast("Item added successfully", "success");
   }
+}
+
+  async function handleUpdate(
+  id: number,
+  name: string,
+  quantity: number,
+  storageLocation: string,
+  sku: string,
+  category: string,
+  assignedTo: string
+) {
+  const { data, error } = await supabase
+    .from("items")
+    .update({
+      name,
+      quantity,
+      storage_location: storageLocation,
+      sku,
+      category,
+      assigned_to: assignedTo,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id)
+    .select();
+
+  if (error) {
+    console.error("Error updating item:", error);
+    showToast("Failed to update item", "error");
+    return;
+  }
+
+  if (data) {
+    setItems(items.map((item) => (item.id === id ? data[0] : item)));
+    showToast("Item updated successfully", "success");
+  }
+}
 
   async function handleBulkDelete() {
     const { error } = await supabase.from("items").delete().in("id", selectedIds);
@@ -136,45 +169,51 @@ export default function InventoryList({ items, setItems, loading, refetch }: Inv
 
       <div className="item-list">
         <div className="item-list__header">
-          <input
-            type="checkbox"
-            checked={selectedIds.length === filteredItems.length && filteredItems.length > 0}
-            onChange={toggleSelectAll}
-          />
-          <span>Item Name</span>
-          <span>Quantity</span>
-          <span>Location</span>
-          <span>Last Updated</span>
-          <span>Status</span>
-          <span></span>
-        </div>
+  <input
+    type="checkbox"
+    checked={selectedIds.length === filteredItems.length && filteredItems.length > 0}
+    onChange={toggleSelectAll}
+  />
+  <span>Item Name</span>
+  <span>SKU</span>
+  <span>Quantity</span>
+  <span>Category</span>
+  <span>Location</span>
+  <span>Assigned To</span>
+  <span>Last Updated</span>
+  <span>Status</span>
+  <span></span>
+</div>
 
         {loading ? (
-          <div className="loading-state">Loading inventory...</div>
-        ) : filteredItems.length === 0 ? (
-          <div className="empty-state">
-            <span className="empty-state__icon">📦</span>
-            <p>No items found</p>
-            <span className="empty-state__hint">
-              {searchQuery ? "Try a different search term" : "Add your first item to get started"}
-            </span>
-          </div>
-        ) : (
-          filteredItems.map((item) => (
-            <InventoryItem
-              key={item.id}
-              name={item.name}
-              quantity={item.quantity}
-              storageLocation={item.storage_location}
-              updatedAt={item.updated_at}
-              onDelete={() => setConfirmDeleteId(item.id)}
-              id={item.id}
-              onUpdate={handleUpdate}
-              isSelected={selectedIds.includes(item.id)}
-              onToggleSelect={() => toggleSelect(item.id)}
-            />
-          ))
-        )}
+  <div className="loading-state">Loading inventory...</div>
+) : filteredItems.length === 0 ? (
+  <div className="empty-state">
+    <span className="empty-state__icon">📦</span>
+    <p>No items found</p>
+    <span className="empty-state__hint">
+      {searchQuery ? "Try a different search term" : "Add your first item to get started"}
+    </span>
+  </div>
+) : (
+  filteredItems.map((item) => (
+    <InventoryItem
+      key={item.id}
+      name={item.name}
+      quantity={item.quantity}
+      storageLocation={item.storage_location}
+      updatedAt={item.updated_at}
+      sku={item.sku}
+      category={item.category}
+      assignedTo={item.assigned_to}
+      onDelete={() => setConfirmDeleteId(item.id)}
+      id={item.id}
+      onUpdate={handleUpdate}
+      isSelected={selectedIds.includes(item.id)}
+      onToggleSelect={() => toggleSelect(item.id)}
+    />
+  ))
+)}
       </div>
 
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
