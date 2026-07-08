@@ -1,7 +1,9 @@
 .sidebar {
   width: 220px;
   min-height: 100vh;
-  background: var(--bg-surface);
+  background: var(--bg-surface-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-right: 1px solid var(--border-color);
   padding: 1.5rem 1rem;
   display: flex;
@@ -61,13 +63,14 @@
     }
 
     &--active {
-      background: var(--accent);
-      color: white;
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 0 20px var(--accent-glow);
 
-      &:hover {
-        background: var(--accent);
-      }
-    }
+  &:hover {
+    background: var(--accent);
+  }
+}
   }
 
   &__icon {

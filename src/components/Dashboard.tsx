@@ -97,7 +97,7 @@ export default function Dashboard({ items, loading }: DashboardProps) {
                 <XAxis dataKey="location" stroke="var(--text-secondary)" fontSize={12} />
                 <YAxis stroke="var(--text-secondary)" fontSize={12} />
                 <Tooltip />
-                <Bar dataKey="quantity" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="quantity" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           )}
