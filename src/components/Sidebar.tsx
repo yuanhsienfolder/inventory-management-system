@@ -3,7 +3,7 @@ import Suppliers from "./Suppliers";
 
 type SidebarProps = {
   activeView: string;
-  onNavigate: (view: "dashboard" | "inventory" | "reports" | "history" | "suppliers") => void;
+  onNavigate: (view: "dashboard" | "inventory" | "reports" | "history" | "suppliers" | "purchase-orders") => void;
 };
     
 
@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { label: "Dashboard", icon: "▦", value: "dashboard" as const },
   { label: "Inventory", icon: "◫", value: "inventory" as const },
   { label: "Suppliers", icon: "▭", value: "suppliers" as const },
+  { label: "Purchase Orders", icon: "▤", value: "purchase-orders" as const },
   { label: "Reports", icon: "▤", value: "reports" as const },
   { label: "History", icon: "◷", value: "history" as const },
 ];

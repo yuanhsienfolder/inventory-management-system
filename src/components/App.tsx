@@ -10,6 +10,7 @@ import type { Session } from "@supabase/supabase-js";
 import "./App.scss";
 import History from "./History";
 import Suppliers from "./Suppliers";
+import PurchaseOrders from "./PurchaseOrders";
 
 export type Item = {
   id: number;
@@ -24,7 +25,7 @@ export type Item = {
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(null);
-  const [activeView, setActiveView] = useState<"dashboard" | "inventory" | "reports" | "history" | "suppliers">("dashboard");
+  const [activeView, setActiveView] = useState<"dashboard" | "inventory" | "reports" | "history" | "suppliers" | "purchase-orders">("dashboard");
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   
@@ -78,6 +79,7 @@ export default function App() {
         {activeView === "reports" && <Reports items={items} />}
         {activeView === "history" && <History />}
         {activeView === "suppliers" && <Suppliers />}
+        {activeView === "purchase-orders" && <PurchaseOrders />}
       </div>
     </div>
   );
