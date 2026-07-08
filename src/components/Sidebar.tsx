@@ -3,7 +3,7 @@ import Suppliers from "./Suppliers";
 
 type SidebarProps = {
   activeView: string;
-  onNavigate: (view: "dashboard" | "inventory" | "reports" | "history" | "suppliers" | "purchase-orders") => void;
+  onNavigate: (view: "dashboard" | "inventory" | "reports" | "history" | "suppliers" | "purchase-orders" | "team") => void;
 };
     
 
@@ -14,6 +14,7 @@ const NAV_ITEMS = [
   { label: "Purchase Orders", icon: "▤", value: "purchase-orders" as const },
   { label: "Reports", icon: "▤", value: "reports" as const },
   { label: "History", icon: "◷", value: "history" as const },
+  { label: "Team", icon: "◉", value: "team" as const },
 ];
 
 export default function Sidebar({ activeView, onNavigate }: SidebarProps) {

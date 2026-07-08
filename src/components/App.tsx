@@ -11,6 +11,7 @@ import "./App.scss";
 import History from "./History";
 import Suppliers from "./Suppliers";
 import PurchaseOrders from "./PurchaseOrders";
+import Team from "./Team";
 
 export type Item = {
   id: number;
@@ -25,7 +26,7 @@ export type Item = {
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(null);
-  const [activeView, setActiveView] = useState<"dashboard" | "inventory" | "reports" | "history" | "suppliers" | "purchase-orders">("dashboard");
+  const [activeView, setActiveView] = useState<"dashboard" | "inventory" | "reports" | "history" | "suppliers" | "purchase-orders" | "team">("dashboard");
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   
@@ -80,6 +81,7 @@ export default function App() {
         {activeView === "history" && <History />}
         {activeView === "suppliers" && <Suppliers />}
         {activeView === "purchase-orders" && <PurchaseOrders />}
+        {activeView === "team" && <Team />}
       </div>
     </div>
   );
